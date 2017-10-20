@@ -1,0 +1,97 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(stringr)
+
+data <- read.csv("candy_production.csv")
+
+head(data)
+
+dim(data)
+
+df <- data
+
+str_sub("1980-01-01",3,3)
+
+df1<-df%>%
+  mutate(date = ymd(df$observation_date))
+
+head(df)
+
+ggplot()+
+  geom_line(data = df1, aes(x = date, y = IPG3113N))
+
+df2 <- df1%>%
+  filter(date >= "1990-01-01", date < "1991-01-01")
+
+ggplot()+
+  geom_line(data = df2, aes(x = date, y = IPG3113N))+
+  scale_x_date(date_breaks = "1 month", date_labels = "%b")
+
+head(df2)
+
+df3 <- df2
+  
+df4<-df1%>%
+  mutate(date = str_sub(date,3,3))%>%
+  group_by(date)%>%
+  summarise(mean = mean(IPG3113N))
+  
+
+head(df4)
+  
+
+
+df4$date<-factor(df4$date,levels=c("8","9","0"))
+levels(df4$date)
+
+df4<-df4%>%
+  filter(!date == "na")%>%
+  mutate(date2 = paste(date,"0's",sep=''))
+
+ggplot()+
+  geom_bar(data = df4, aes(x = date2, y = mean), stat = "identity")+
+  ylab("avg")
+
+
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+ggplot()+
+  geom_line(data = df1, aes(x = date, y = IPG3113N))
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+ggplot()+
+  geom_line(data = df2, aes(x = date, y = IPG3113N))+
+  scale_x_date(date_breaks = "1 month", date_labels = "%b")
+```
+
+### Chart C
+
+```{r}
+ggplot()+
+  geom_bar(data = df4, aes(x = date2, y = mean), stat = "identity")+
+  ylab("avg")
+```
+

@@ -1,0 +1,93 @@
+\documentclass{article}
+
+\begin{document}
+
+\title{Aritmatic}
+\author{Justin Minsk}
+\maketitle
+
+\begin{abstract}
+In this article we give examples of basic arithmatic in R.
+\end{abstract}
+
+\section{Addition}
+Addition in R is done with + sign\footnote{This is detailed expertly in Ousley's fine book on additon}. Here is an exmaple:
+
+<<>>=
+x <- 4
+y <- 3
+
+x+y
+@
+
+\section{Subtraction}
+For subtraction in R, we use the - sign. Here is an example:
+
+<<>>=
+x <- 8
+y <- 3
+x - y
+@
+
+\section{Multiplication}
+For multiplication, we use an * sign. Here is an example:
+
+<<>>=
+x <- 5
+y <- 6
+
+x*y
+@
+
+\section{Division}
+Finally,  we divide by using the /. Here is an exmaple:
+
+<<>>=
+x <- 15
+y <- 5
+
+x/y
+@
+
+\section{Ploting}
+Although this has little to do with basic arithmatic, I thought it would be useful to show some ploting.
+
+<<>>=
+x <- seq(1, 10, 0.1)
+@
+
+\noindent This creates a list 1 through 10 by 0.1 (1.1, 1.2, 1.3, etc.)
+
+<<echo=FALSE>>=
+x
+@
+
+\noindent Now let's create a \textit{y} varible:
+
+<<>>=
+y <- x^2
+@
+
+\noindent This squares all the \textit{x} values:
+
+<<echo=FALSE>>=
+y
+@
+
+\noindent We can now create a dataframe this way:
+
+<<>>=
+df <- data.frame(x,y)
+df
+@
+
+\noindent Finally we can use ggplot to get a plot, do not forget the library:
+
+<<warning=FALSE>>=
+library(ggplot2)
+
+ggplot()+
+  geom_point(data = df, aes(x = x, y = y))
+@
+
+\end{document}
