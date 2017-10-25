@@ -2,6 +2,7 @@ library(tidytext)
 library(tm)
 library(wordcloud)
 library(stringr)
+library(dplyr)
 library(janeaustenr)
 
 #--------------
