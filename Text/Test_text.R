@@ -3,7 +3,7 @@ library(tm)
 library(wordcloud)
 library(stringr)
 library(dplyr)
-library(janeaustenr)
+library(knitr)
 
 #--------------
 
@@ -30,6 +30,8 @@ wordcloud(words_free$word, words_free$count, colors =  brewer.pal(5, "Dark2"))
 #create a wordcloud
 
 #-------------
+
+library(janeaustenr)
 
 sns <- austen_books()
 #bring in all of jane austen's books
@@ -72,3 +74,12 @@ words_free <- words_df%>%
 
 wordcloud(words_free$word, words_free$count, min.freq = 25)
 #make a word cloud
+
+#---------------
+
+library(gutenbergr)
+
+gutenberg_works(title == "Dracula")
+#get Dracula text
+
+gutenberg_works(title == str_extract(title, "Frankenstein"))
