@@ -82,4 +82,29 @@ library(gutenbergr)
 gutenberg_works(title == "Dracula")
 #get Dracula text
 
-gutenberg_works(title == str_extract(title, "Frankenstein"))
+gutenberg_works(author == str_extract(author, "Poe, Edgar Allan"))
+#see Poes work's IDs
+
+df <- gutenberg_download(10031)
+#get the complete poetical works of Edgar Allan Poe
+
+words_df <- df%>%
+  unnest_tokens(word, text)
+#split the lines into words
+
+words_df <- words_df%>%
+  filter(!(word %in% stop_words$word))
+#get rid of common words that are not unique (the, a, etc.)
+
+words_df <- words_df%>%
+  filter(!word == "thy" & !word == "thou" & !word == "thee")
+#some older words not in out stop_word list that are not useful
+
+words_free <- words_df%>%
+  group_by(word)%>%
+  summarise(count = n())%>%
+  arrange(-count)
+#make a count of the word
+
+wordcloud(words_free$word, words_free$count, min.freq = 25)
+#make a word cloud
