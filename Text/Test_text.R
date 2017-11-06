@@ -154,9 +154,15 @@ bing = get_sentiments('bing')
 dracula <- gutenberg_download(345)
 #get dracula text
 
+dracula$line <- 1:15568
+#add the line column with a line number
+
 dracula_words <- dracula%>%
   unnest_tokens(word, text)
 #split the lines into words
+
+dracula_words$group <- dracula_words$line %/% 80
+#divide the lines into groups of 80 lines
 
 dracula_sent <- inner_join(bing, dracula_words)
 #join all the words in dracula and bing words
@@ -171,3 +177,36 @@ neg_rows <- which(dracula_sent$sentiment == 'negative')
 # all the rows which contain negative
 
 dracula_sent$score[neg_rows] <- -1
+#make all of the scores where sent is negative to -1
+
+dracula_sent <- dracula_sent%>%
+  group_by(group)%>%
+  summarise(group_sentiment = sum(score))
+#group by the groups of 80 lines and add together the sent score
+
+ggplot() +
+  geom_col(data = dracula_sent, aes(x = group, y = group_sentiment), stat = 'identity', fill = '#e65c00', color = 'black')
+#puts a column where each point is of group and group_sentiment
+#used html color picker to find the color I wanted to use then used the hex code
+
+#------------
+
+afin = get_sentiments('afin')
+
+dracula <- gutenberg_download(345)
+
+dracula$line <- 1:15568
+
+dracula$group <- dracula$line %/% 80
+
+dracula_word <- dracula %>%
+  unnest_tokens(word, text)
+
+dracula_sent <-inner_join(afin, dracula_word)
+
+dracula_sent <- dracula_sent %>%
+  group_by(group) %>%
+  summarise(group_sent = sum(score))
+
+ggplot() +
+  geom_col(data = dracula_sent, aes(x = group, y = group_sent), stat = 'identity', fill = '#e65c00', color = 'black')
