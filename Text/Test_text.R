@@ -4,6 +4,8 @@ library(wordcloud)
 library(stringr)
 library(dplyr)
 library(knitr)
+library(gutenbergr)
+library(ggplot2)
 
 #--------------
 
@@ -76,8 +78,6 @@ wordcloud(words_free$word, words_free$count, min.freq = 25)
 #make a word cloud
 
 #---------------
-
-library(gutenbergr)
 
 packages <- c('dplyr', 'stringr', 'tidytext', 'tm', 'wordcloud')
 knitr::write_bib(packages, 'bib.bib')
@@ -210,3 +210,108 @@ dracula_sent <- dracula_sent %>%
 
 ggplot() +
   geom_col(data = dracula_sent, aes(x = group, y = group_sent), stat = 'identity', fill = '#e65c00', color = 'black')
+
+#------------------
+
+dracula <- gutenberg_download(345)
+#get dracula
+
+bing = get_sentiments('bing')
+#get snetiment
+
+dracula$line <- 1:15568
+#get the lines
+
+dracula_words <- dracula%>%
+  unnest_tokens(word, text)
+# break up the words from the lines
+
+dracula_words$group <- dracula_words$line %/% 80
+#break the lines into groups of 80
+
+dracula_sent <- inner_join(bing, dracula_words)
+#join bing and dracula words
+
+dracula_sent$gutenberg_id <- NULL
+#get rid of gutenberg_id
+
+#------------------
+
+dracula_pos <- dracula_sent%>%
+  filter(sentiment == 'positive')%>%
+  group_by(word)%>%
+  summarise(count = n())%>%
+  arrange(desc(count))%>%
+  filter(count >= 66)%>%
+  top_n(10, wt = count)
+#get the top 10 words that are postive from smallest to greatest
+
+dracula_pos$sentiment <- 'postive'
+#add back postive sentiment
+
+dracula_pos$word <- factor(dracula_pos$word, level = dracula_pos$word)
+#factor out the words
+
+ggplot()+
+  geom_bar(data = dracula_pos, aes(x = word, y = count), stat = 'identity')+
+  coord_flip()
+#graph pos words
+
+#----------------
+
+dracula_neg <- dracula_sent%>%
+  filter(sentiment == 'negative')%>%
+  group_by(word)%>%
+  summarise(count = n())%>%
+  arrange(desc(count))%>%
+  filter(count >= 53)%>%
+  top_n(10, wt = count)
+#get top 10 negtive words from smallest to greatest
+
+dracula_neg$sentiment <- 'negative'
+#add back negtive sentiment
+
+dracula_neg$word <- factor(dracula_neg$word, level = dracula_neg$word)
+#create factors by word
+
+ggplot()+
+  geom_bar(data = dracula_neg, aes(x = word, y = count), stat = 'identity')+
+  coord_flip()
+#graph neg words
+
+#--------------------
+
+dracula_comp <- rbind(dracula_neg, dracula_pos)
+#rbind the two tables
+
+ggplot()+
+  geom_bar(data = dracula_comp, aes(x = word, y = count, color = sentiment, fill = sentiment), stat = 'identity')+
+  coord_flip()+
+  facet_wrap(~sentiment, scales = 'free_y')+
+  scale_fill_manual(values = c('black', '#ea6205'))+
+  scale_color_manual(values = c('#ea6205', 'black'))
+#graph both sentiments top 10s with negtive on one side and postives on the other
+
+#------------------
+
+dracula <- gutenberg_download(345)
+#get dracula
+
+bing = get_sentiments('bing')
+#get snetiment
+
+dracula_words <- dracula%>%
+  unnest_tokens(word, text)
+# break up the words from the lines
+
+dracula_words$gutenberg_id <- NULL
+#get rid of gutenberg_id
+
+dracula_words <- dracula_words%>%
+  group_by(word)%>%
+  summarise(count = n())
+#get the count of each word
+
+dracula_sent <- inner_join(bing, dracula_words)
+#join bing and dracula words
+
