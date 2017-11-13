@@ -6,6 +6,8 @@ library(dplyr)
 library(knitr)
 library(gutenbergr)
 library(ggplot2)
+library(wordcloud2)
+library(reshape2)
 
 #--------------
 
@@ -309,9 +311,23 @@ dracula_words$gutenberg_id <- NULL
 
 dracula_words <- dracula_words%>%
   group_by(word)%>%
-  summarise(count = n())
+  summarise(freq = n())
 #get the count of each word
 
 dracula_sent <- inner_join(bing, dracula_words)
 #join bing and dracula words
 
+wordcloud(dracula_sent$word, dracula_sent$freq, min.freq = 5)
+#worcloud of the words
+
+dracula_matrix <- acast(dracula_sent, word~sentiment, value.var = 'freq', fill = 0)
+#create a matrix with freq and sentiment combined into their own columns
+
+comparison.cloud(dracula_matrix, colors = c('black', '#ff7433'))
+#make a word cloud looking at freq and sentiment
+
+dracula_sent$sentiment <- NULL
+#get rid of sentiment
+
+wordcloud2(dracula_sent, figPath = 'bat.jpg', backgroundColor = 'black', size = 0.5)
+#make a prettier word cloud
