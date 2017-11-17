@@ -1,18 +1,12 @@
-\frametitle{Access Progect Gutenburg}
+\frametitle{Download Dracula}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df}\hlkwb{<-}\hlkwd{gutenberg_works}\hlstd{(}\hlkwd{str_detect}\hlstd{(title,} \hlstr{'Dracula'}\hlstd{))}
-\hlstd{df}\hlopt{$}\hlstd{gutenberg_id}
+\hlstd{dracula} \hlkwb{<-} \hlkwd{gutenberg_download}\hlstd{(}\hlnum{345}\hlstd{)}
+\hlstd{dracula}\hlopt{$}\hlstd{text[}\hlnum{500}\hlstd{]}
 \end{alltt}
 \begin{verbatim}
-## [1]   345 10150
-\end{verbatim}
-\begin{alltt}
-\hlstd{df}\hlopt{$}\hlstd{title}
-\end{alltt}
-\begin{verbatim}
-## [1] "Dracula"         "Dracula's Guest"
+## [1] "my own disappointment. I was already thinking what I had best do, when"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

@@ -47,6 +47,14 @@ df$title
 @
 \end{frame}
 
+\section{Download Dracula}
+\begin{frame}[fragile]
+  \frametitle{Download Dracula}
+<<warning=FALSE,message=FALSE>>=
+dracula <- gutenberg_download(345)
+dracula$text[500]
+@
+\end{frame}  
 
 
 \end{document}
