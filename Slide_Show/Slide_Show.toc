@@ -1,3 +1,6 @@
 \beamer@sectionintoc {1}{Load and Install Libraries}{2}{0}{1}
 \beamer@sectionintoc {2}{Access Progect Gutenburg}{7}{0}{2}
 \beamer@sectionintoc {3}{Download Dracula}{8}{0}{3}
+\beamer@sectionintoc {4}{Unpacking the Words}{9}{0}{4}
+\beamer@sectionintoc {5}{Bing Lexicon}{10}{0}{5}
+\beamer@sectionintoc {6}{Interjoin}{11}{0}{6}

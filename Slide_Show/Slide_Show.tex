@@ -135,14 +135,107 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{dracula} \hlkwb{<-} \hlkwd{gutenberg_download}\hlstd{(}\hlnum{345}\hlstd{)}
-\hlstd{dracula}\hlopt{$}\hlstd{text[}\hlnum{500}\hlstd{]}
+\hlkwd{colnames}\hlstd{(dracula)}
 \end{alltt}
 \begin{verbatim}
-## [1] "my own disappointment. I was already thinking what I had best do, when"
+## [1] "gutenberg_id" "text"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{substr}\hlstd{(dracula}\hlopt{$}\hlstd{text[}\hlnum{500}\hlstd{],}\hlnum{1}\hlstd{,}\hlnum{21}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "my own disappointment"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\section{Unpacking the Words}
+\begin{frame}[fragile]
+  \frametitle{Unpacking the Words}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dracula_words} \hlkwb{<-} \hlstd{dracula}\hlopt{%>%}
+  \hlkwd{unnest_tokens}\hlstd{(word, text)}
+\hlkwd{colnames}\hlstd{(dracula_words)}
+\end{alltt}
+\begin{verbatim}
+## [1] "gutenberg_id" "word"
+\end{verbatim}
+\begin{alltt}
+\hlstd{dracula_words[}\hlnum{498}\hlopt{:}\hlnum{500}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   gutenberg_id  word
+##          <int> <chr>
+## 1          345  fail
+## 2          345    to
+## 3          345  have
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}  
 
+\section{Bing Lexicon}
+\begin{frame}[fragile]
+  \frametitle{Bing Lexicon}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{bing} \hlkwb{<-} \hlkwd{get_sentiments}\hlstd{(}\hlstr{'bing'}\hlstd{)}
+\hlkwd{colnames}\hlstd{(bing)}
+\end{alltt}
+\begin{verbatim}
+## [1] "word"      "sentiment"
+\end{verbatim}
+\begin{alltt}
+\hlstd{bing[}\hlnum{498}\hlopt{:}\hlnum{500}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## # A tibble: 3 x 2
+##          word sentiment
+##         <chr>     <chr>
+## 1     bereave  negative
+## 2 bereavement  negative
+## 3      bereft  negative
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}  
+
+\section{Interjoin}
+\begin{frame}[fragile]
+  \frametitle{Interjoin}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dracula_words}\hlkwb{<-}\hlkwd{inner_join}\hlstd{(dracula_words,bing)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Joining, by = "{}word"{}}}\begin{alltt}
+\hlstd{dracula_words}\hlopt{$}\hlstd{gutenberg_id} \hlkwb{<-} \hlkwa{NULL}
+\hlkwd{colnames}\hlstd{(dracula_words)}
+\end{alltt}
+\begin{verbatim}
+## [1] "word"      "sentiment"
+\end{verbatim}
+\begin{alltt}
+\hlstd{dracula_words[}\hlnum{498}\hlopt{:}\hlnum{500}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## # A tibble: 3 x 2
+##      word sentiment
+##     <chr>     <chr>
+## 1   great  positive
+## 2    love  positive
+## 3 crowded  negative
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+\end{frame}
 
 \end{document}

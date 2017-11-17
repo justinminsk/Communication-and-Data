@@ -52,9 +52,42 @@ df$title
   \frametitle{Download Dracula}
 <<warning=FALSE,message=FALSE>>=
 dracula <- gutenberg_download(345)
-dracula$text[500]
+colnames(dracula)
+substr(dracula$text[500],1,21)
+@
+\end{frame}
+
+\section{Unpacking the Words}
+\begin{frame}[fragile]
+  \frametitle{Unpacking the Words}
+<<>>=
+dracula_words <- dracula%>%
+  unnest_tokens(word, text)
+colnames(dracula_words)
+dracula_words[498:500,]
 @
 \end{frame}  
 
+\section{Bing Lexicon}
+\begin{frame}[fragile]
+  \frametitle{Bing Lexicon}
+<<>>=
+bing <- get_sentiments('bing')
+colnames(bing)
+bing[498:500,]
+@
+\end{frame}  
+
+\section{Interjoin}
+\begin{frame}[fragile]
+  \frametitle{Interjoin}
+<<>>=
+dracula_words<-inner_join(dracula_words,bing)
+dracula_words$gutenberg_id <- NULL
+colnames(dracula_words)
+dracula_words[498:500,]
+@
+  
+\end{frame}
 
 \end{document}
