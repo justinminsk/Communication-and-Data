@@ -1,0 +1,52 @@
+\documentclass{beamer}
+
+\begin{document}
+
+\title{Compraison Barplots}
+\author{Justin Minsk}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Load and Install Libraries}
+\begin{frame}[fragile]
+  \frametitle{Load and Install Libraries}
+    \begin{itemize}
+      \item<1->
+<<warning=FALSE,message=FALSE>>=
+library(dplyr)
+@
+      \item<2->
+<<warning=FALSE,message=FALSE>>=
+library(tidytext)
+@
+      \item<3->
+<<warning=FALSE,message=FALSE>>=
+library(gutenbergr)
+@
+      \item<4->
+<<warning=FALSE,message=FALSE>>=
+library(ggplot2)
+@
+      \item<5->
+<<warning=FALSE,message=FALSE>>=
+library(stringr)
+@
+    \end{itemize}
+\end{frame}
+
+\section{Access Progect Gutenburg}
+\begin{frame}[fragile]
+  \frametitle{Access Progect Gutenburg}
+<<warning=FALSE,message=FALSE>>=
+df<-gutenberg_works(str_detect(title, 'Dracula'))
+df$gutenberg_id
+df$title
+
+@
+\end{frame}
+
+
+
+\end{document}

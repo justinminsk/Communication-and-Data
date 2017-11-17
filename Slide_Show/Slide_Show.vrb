@@ -1,0 +1,18 @@
+\frametitle{Access Progect Gutenburg}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{df}\hlkwb{<-}\hlkwd{gutenberg_works}\hlstd{(}\hlkwd{str_detect}\hlstd{(title,} \hlstr{'Dracula'}\hlstd{))}
+\hlstd{df}\hlopt{$}\hlstd{gutenberg_id}
+\end{alltt}
+\begin{verbatim}
+## [1]   345 10150
+\end{verbatim}
+\begin{alltt}
+\hlstd{df}\hlopt{$}\hlstd{title}
+\end{alltt}
+\begin{verbatim}
+## [1] "Dracula"         "Dracula's Guest"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
