@@ -49,6 +49,8 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
+\usetheme{bergen}
+\usecolortheme{albatross}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -236,6 +238,134 @@
 \end{kframe}
 \end{knitrout}
   
+\end{frame}
+
+\section{Top Ten Postive Words}
+\begin{frame}[allowframebreaks, fragile]
+  \frametitle{Top Ten Postive Words}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dracula_pos} \hlkwb{<-} \hlstd{dracula_words}\hlopt{%>%}
+  \hlkwd{filter}\hlstd{(sentiment} \hlopt{==} \hlstr{'positive'}\hlstd{)}\hlopt{%>%}
+  \hlkwd{group_by}\hlstd{(word)}\hlopt{%>%}
+  \hlkwd{summarise}\hlstd{(}\hlkwc{count} \hlstd{=} \hlkwd{n}\hlstd{())}\hlopt{%>%}
+  \hlkwd{arrange}\hlstd{(}\hlkwd{desc}\hlstd{(count))}\hlopt{%>%}
+  \hlkwd{filter}\hlstd{(count} \hlopt{>=} \hlnum{66}\hlstd{)}\hlopt{%>%}
+  \hlkwd{top_n}\hlstd{(}\hlnum{10}\hlstd{,} \hlkwc{wt} \hlstd{= count)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\framebreak
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dracula_pos}
+\end{alltt}
+\begin{verbatim}
+## # A tibble: 10 x 2
+##      word count
+##     <chr> <int>
+##  1   like   292
+##  2   good   258
+##  3   well   245
+##  4  great   183
+##  5   work   146
+##  6  right    99
+##  7   love    84
+##  8 better    77
+##  9  ready    71
+## 10  sweet    66
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\section{Top Ten Negtive Words}
+\begin{frame}[allowframebreaks, fragile]
+  \frametitle{Top Ten Negtive Words}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dracula_neg} \hlkwb{<-} \hlstd{dracula_words}\hlopt{%>%}
+  \hlkwd{filter}\hlstd{(sentiment} \hlopt{==} \hlstr{'negative'}\hlstd{)}\hlopt{%>%}
+  \hlkwd{group_by}\hlstd{(word)}\hlopt{%>%}
+  \hlkwd{summarise}\hlstd{(}\hlkwc{count} \hlstd{=} \hlkwd{n}\hlstd{())}\hlopt{%>%}
+  \hlkwd{arrange}\hlstd{(}\hlkwd{desc}\hlstd{(count))}\hlopt{%>%}
+  \hlkwd{filter}\hlstd{(count} \hlopt{>=} \hlnum{53}\hlstd{)}\hlopt{%>%}
+  \hlkwd{top_n}\hlstd{(}\hlnum{10}\hlstd{,} \hlkwc{wt} \hlstd{= count)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\framebreak
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dracula_neg}
+\end{alltt}
+\begin{verbatim}
+## # A tibble: 10 x 2
+##        word count
+##       <chr> <int>
+##  1     poor   193
+##  2     fear   137
+##  3     dead   109
+##  4 terrible   100
+##  5    death    94
+##  6  strange    90
+##  7     dark    77
+##  8     miss    60
+##  9     fell    59
+## 10  trouble    53
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\section{Comparison Bar Plot}
+\begin{frame}[allowframebreaks, fragile]
+  \frametitle{Comparison Bar Plot}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{dracula_pos}\hlopt{$}\hlstd{sentiment} \hlkwb{<-} \hlstr{'postive'}
+\hlstd{dracula_neg}\hlopt{$}\hlstd{sentiment} \hlkwb{<-} \hlstr{'negative'}
+\hlstd{dracula_pos}\hlopt{$}\hlstd{word} \hlkwb{<-} \hlkwd{factor}\hlstd{(dracula_pos}\hlopt{$}\hlstd{word,}
+                           \hlkwc{level} \hlstd{= dracula_pos}\hlopt{$}\hlstd{word)}
+\hlstd{dracula_neg}\hlopt{$}\hlstd{word} \hlkwb{<-} \hlkwd{factor}\hlstd{(dracula_neg}\hlopt{$}\hlstd{word,}
+                           \hlkwc{level} \hlstd{= dracula_neg}\hlopt{$}\hlstd{word)}
+\hlstd{dracula_comp} \hlkwb{<-} \hlkwd{rbind}\hlstd{(dracula_neg, dracula_pos)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\framebreak
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggplot}\hlstd{()}\hlopt{+}
+  \hlkwd{geom_bar}\hlstd{(}\hlkwc{data} \hlstd{= dracula_comp,}
+           \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= word,} \hlkwc{y} \hlstd{= count,}
+               \hlkwc{color} \hlstd{= sentiment,}
+               \hlkwc{fill} \hlstd{= sentiment),} \hlkwc{stat} \hlstd{=} \hlstr{'identity'}\hlstd{)}\hlopt{+}
+  \hlkwd{coord_flip}\hlstd{()}\hlopt{+}
+  \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{sentiment,} \hlkwc{scales} \hlstd{=} \hlstr{'free_y'}\hlstd{)}\hlopt{+}
+  \hlkwd{scale_fill_manual}\hlstd{(}\hlkwc{values} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'black'}\hlstd{,} \hlstr{'#ea6205'}\hlstd{))}\hlopt{+}
+  \hlkwd{scale_color_manual}\hlstd{(}\hlkwc{values} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'#ea6205'}\hlstd{,} \hlstr{'black'}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-16-1} 
+
+\end{knitrout}
+
 \end{frame}
 
 \end{document}

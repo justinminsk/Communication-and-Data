@@ -1,29 +1,36 @@
-\frametitle{Interjoin}
+\frametitle{Comparison Bar Plot}
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{dracula_words}\hlkwb{<-}\hlkwd{inner_join}\hlstd{(dracula_words,bing)}
+\hlstd{dracula_pos}\hlopt{$}\hlstd{sentiment} \hlkwb{<-} \hlstr{'postive'}
+\hlstd{dracula_neg}\hlopt{$}\hlstd{sentiment} \hlkwb{<-} \hlstr{'negative'}
+\hlstd{dracula_pos}\hlopt{$}\hlstd{word} \hlkwb{<-} \hlkwd{factor}\hlstd{(dracula_pos}\hlopt{$}\hlstd{word,}
+                           \hlkwc{level} \hlstd{= dracula_pos}\hlopt{$}\hlstd{word)}
+\hlstd{dracula_neg}\hlopt{$}\hlstd{word} \hlkwb{<-} \hlkwd{factor}\hlstd{(dracula_neg}\hlopt{$}\hlstd{word,}
+                           \hlkwc{level} \hlstd{= dracula_neg}\hlopt{$}\hlstd{word)}
+\hlstd{dracula_comp} \hlkwb{<-} \hlkwd{rbind}\hlstd{(dracula_neg, dracula_pos)}
 \end{alltt}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Joining, by = "{}word"{}}}\begin{alltt}
-\hlstd{dracula_words}\hlopt{$}\hlstd{gutenberg_id} \hlkwb{<-} \hlkwa{NULL}
-\hlkwd{colnames}\hlstd{(dracula_words)}
-\end{alltt}
-\begin{verbatim}
-## [1] "word"      "sentiment"
-\end{verbatim}
-\begin{alltt}
-\hlstd{dracula_words[}\hlnum{498}\hlopt{:}\hlnum{500}\hlstd{,]}
-\end{alltt}
-\begin{verbatim}
-## # A tibble: 3 x 2
-##      word sentiment
-##     <chr>     <chr>
-## 1   great  positive
-## 2    love  positive
-## 3 crowded  negative
-\end{verbatim}
 \end{kframe}
+\end{knitrout}
+
+\framebreak
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggplot}\hlstd{()}\hlopt{+}
+  \hlkwd{geom_bar}\hlstd{(}\hlkwc{data} \hlstd{= dracula_comp,}
+           \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= word,} \hlkwc{y} \hlstd{= count,}
+               \hlkwc{color} \hlstd{= sentiment,}
+               \hlkwc{fill} \hlstd{= sentiment),} \hlkwc{stat} \hlstd{=} \hlstr{'identity'}\hlstd{)}\hlopt{+}
+  \hlkwd{coord_flip}\hlstd{()}\hlopt{+}
+  \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{sentiment,} \hlkwc{scales} \hlstd{=} \hlstr{'free_y'}\hlstd{)}\hlopt{+}
+  \hlkwd{scale_fill_manual}\hlstd{(}\hlkwc{values} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'black'}\hlstd{,} \hlstr{'#ea6205'}\hlstd{))}\hlopt{+}
+  \hlkwd{scale_color_manual}\hlstd{(}\hlkwc{values} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{'#ea6205'}\hlstd{,} \hlstr{'black'}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-16-1}
+
 \end{knitrout}
 

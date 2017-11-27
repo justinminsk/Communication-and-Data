@@ -4,3 +4,6 @@
 \beamer@sectionintoc {4}{Unpacking the Words}{9}{0}{4}
 \beamer@sectionintoc {5}{Bing Lexicon}{10}{0}{5}
 \beamer@sectionintoc {6}{Interjoin}{11}{0}{6}
+\beamer@sectionintoc {7}{Top Ten Postive Words}{12}{0}{7}
+\beamer@sectionintoc {8}{Top Ten Negtive Words}{14}{0}{8}
+\beamer@sectionintoc {9}{Comparison Bar Plot}{16}{0}{9}
