@@ -331,3 +331,9 @@ dracula_sent$sentiment <- NULL
 
 wordcloud2(dracula_sent, figPath = 'bat.jpg', backgroundColor = 'black', size = 0.5)
 #make a prettier word cloud
+
+#------------------------
+#pdflatex article
+#bibtex article
+#pdflatex article
+#\citep

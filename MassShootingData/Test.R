@@ -1,7 +1,7 @@
 #------------
 
 library(dplyr)
-library(ggplots2)
+library(ggplot2)
 library(stringr)
 library(lubridate)
 #import libraries
